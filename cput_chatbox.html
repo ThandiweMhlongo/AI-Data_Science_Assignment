@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <title>CPUT chatbox</title>
+  <style>
+    :root { --bg:#10151c; --panel:#1a2430; --mine:#0e7c66; --bot:#243447; --text:#e8eef4; --muted:#9fb0c3; --line:#2c3a4a; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Segoe UI", Tahoma, sans-serif; background:radial-gradient(circle at top,#1c3a32,var(--bg)); color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:16px; }
+    .app { width:min(900px,100%); height:min(92vh,840px); background:var(--panel); border:1px solid var(--line); border-radius:18px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.35); }
+    #log { min-height:0; }
+    header { padding:18px 20px 12px; border-bottom:1px solid var(--line); }
+    header h1 { margin:0 0 6px; font-size:1.15rem; }
+    header p { margin:0; color:var(--muted); font-size:.92rem; }
+    button.chip { background:#101820; color:var(--text); border:1px solid var(--line); border-radius:999px; padding:8px 12px; cursor:pointer; }
+    button.chip:hover { border-color:var(--mine); }
+    #log { flex:1; min-height:0; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; }
+    .msg { max-width:88%; padding:10px 14px; border-radius:14px; white-space:pre-wrap; line-height:1.45; }
+    .bot { background:var(--bot); align-self:flex-start; }
+    .me { background:var(--mine); align-self:flex-end; }
+    .composer { display:flex; gap:8px; padding:14px; border-top:1px solid var(--line); }
+    #q { flex:1; resize:none; min-height:48px; border-radius:12px; border:1px solid var(--line); background:#101820; color:var(--text); padding:10px 12px; font:inherit; }
+    #send { background:var(--mine); color:#fff; border:0; border-radius:12px; padding:0 18px; font-weight:600; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>CPUT prospectus assistant</h1>
+      <p>Type a qualification name, or type your subjects and percentages. Nothing is listed until you ask.</p>
+    </header>
+    <div id="log"></div>
+    <div class="composer">
+      <textarea id="q" placeholder="Type here…"></textarea>
+      <button id="send" type="button">Ask</button>
+    </div>
+  </div>
+  <script>
+    const PROGRAMMES = [{"name":"Diploma in Agriculture","aps":"30","bands":"30 with Maths;; 31 with Tec h Maths; 28 with Maths;; 30 with Maths;; 29 with Tec h Maths;; 30 with Maths; 31 with Tec h Maths;; 32 with Maths; 28 with Maths;; 30 with Maths;; 29 with Tec h Maths; 31 with Tec h Maths; 28 with Maths;; 30 with Maths;","method":"Method 1","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"4","percent":"50-59%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"},{"subject":"Life Sciences","rating":"4","percent":"50-59%"},{"subject":"Physical Science","rating":"4","percent":"50-59%"}]},{"name":"Bachelor of Food Science \u0026 Technology","aps":"32","bands":"32 with Maths;; 33 with Tec h Maths; 28 with Maths;; 30 with Maths;; 29 with Tec h Maths; 31 with Tec h Maths; 28 with Maths;; 30 with Maths;; 29 with Tech; 31 with Tech; 32 with Maths; 30 with Maths; 26 with Maths;; 28 with Maths;","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"3","percent":"40-49%"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Accountancy","aps":"38","bands":"","method":null,"subjects":[{"subject":"English","rating":"3","percent":"40-49%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Accountancy (Extended)","aps":"35","bands":"","method":null,"subjects":[{"subject":"English","rating":"3","percent":"40-49%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Entrepreneurship","aps":"26","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"2","percent":"30-39%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Entrepreneurship (Extended)","aps":"22","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"2","percent":"30-39%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Operations Management","aps":"28","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"3","percent":"40-49%"}]},{"name":"Diploma in Public Administration","aps":"28","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"2","percent":"30-39%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Public Administration (Extended)","aps":"24","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"2","percent":"30-39%"},{"subject":"Mathematical Literacy","rating":"3","percent":"40-49%"}]},{"name":"Diploma in Retail Business Management","aps":"26","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"2","percent":"30-39%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Real Estate","aps":"26","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"2","percent":"30-39%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Bachelor of Paralegal Studies","aps":"30","bands":"","method":null,"subjects":[{"subject":"English","rating":"1","percent":"0-29%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"3","percent":"40-49%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"BACHELOR IN EDUCATION: FOUNDATION PHASE TEACHING","aps":"32","bands":"","method":null,"subjects":[]},{"name":"BACHELOR IN EDUCATION: INTERMEDIATE PHASE TEACHING","aps":"32","bands":"","method":null,"subjects":[]},{"name":"BACHELOR IN EDUCATION: SENIOR PHASE and FURTHER EDUCATION \u0026 TRAINING (FET) TEACHING","aps":"32","bands":"","method":null,"subjects":[]},{"name":"Bachelor of Nursing","aps":"30","bands":"","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"4","percent":"50-59%"}]},{"name":"Bachelor of Nursing (ECP)","aps":"27-29","bands":"","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Architectural Technology","aps":"30","bands":"30 with M; 32 with ML; 26 with M; 28 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"6","percent":"70-79%"},{"subject":"Mathematical Literacy","rating":"5","percent":"60-69%"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"3","percent":"40-49%"}]},{"name":"Diploma in Interior Design","aps":"30","bands":"30 with M; 32 with ML; 26 with M; 28 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"6","percent":"70-79%"},{"subject":"Mathematical Literacy","rating":"5","percent":"60-69%"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"3","percent":"40-49%"}]},{"name":"Diploma in Fashion","aps":"28","bands":"28 with M \u0026 ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Visual Communication Design","aps":"28","bands":"28 with M \u0026 ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Product Design","aps":"28","bands":"28 with M \u0026 ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Jewellery Design \u0026 Manufacture","aps":"28","bands":"28 with M \u0026 ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Film Production","aps":"30","bands":"","method":null,"subjects":[{"subject":"English","rating":"5","percent":"60-69%"}]},{"name":"Diploma in Photography","aps":"30","bands":"","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Journalism","aps":"28","bands":"28 with M; 30 with ML","method":null,"subjects":[{"subject":"English","rating":"5","percent":"60-69%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"4","percent":"50-59%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Public Relations \u0026 Communication","aps":"28","bands":"28 with M; 30 with ML","method":null,"subjects":[{"subject":"English","rating":"5","percent":"60-69%"},{"subject":"Mathematics","rating":"2","percent":"30-39%"},{"subject":"Technical Maths","rating":"4","percent":"50-59%"},{"subject":"Mathematical Literacy","rating":"3","percent":"40-49%"}]},{"name":"Diploma in Applications Development","aps":"28","bands":"28 with M; 30 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Communication Networks","aps":"28","bands":"28 with M; 30 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Multimedia Applications","aps":"28","bands":"28 with M; 30 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Higher Certificate in ICT","aps":"24","bands":"24 with M; 26 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"}]},{"name":"Diploma in Urban \u0026 Regional Planning","aps":"28","bands":"28 with M; 30 with ML","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"5","percent":"60-69%"}]},{"name":"Diploma in Chemical Engineering","aps":"30","bands":"27 - 29; 23 - 26","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"N/A","percent":"Not required / not accepted"}]},{"name":"Bachelor of Engineering Technology in Chemical Engineering","aps":"36","bands":"","method":"Method 2","subjects":[{"subject":"English","rating":"5","percent":"60-69%"},{"subject":"Mathematics","rating":"5","percent":"60-69%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"5","percent":"60-69%"},{"subject":"Technical Science","rating":"N/A","percent":"Not required / not accepted"}]},{"name":"Diploma in Civil Engineering","aps":"30","bands":"27 - 29; 23 - 26","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"5","percent":"60-69%"}]},{"name":"Diploma in Geomatics (Combining Surveying \u0026 Cartography)","aps":"30","bands":"","method":null,"subjects":[{"subject":"English","rating":"N/A","percent":"Not required / not accepted"}]},{"name":"Bachelor of Engineering Technology in Civil Engineering","aps":"36","bands":"","method":"Method 2","subjects":[{"subject":"English","rating":"5","percent":"60-69%"},{"subject":"Mathematics","rating":"5","percent":"60-69%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"5","percent":"60-69%"},{"subject":"Technical Science","rating":"5","percent":"60-69%"}]},{"name":"Diploma in Clothing \u0026 Textile Technology","aps":"26","bands":"26 with; 28 with; 26 with; 28 with","method":"Method 1","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"3","percent":"40-49%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"4","percent":"50-59%"},{"subject":"Life Sciences","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"N/A","percent":"Not required / not accepted"}]},{"name":"Diploma in Construction","aps":"25","bands":"","method":null,"subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Technical Science","rating":"N/A","percent":"Not required / not accepted"}]},{"name":"Diploma in Engineering Technology in Electrical Engineering","aps":"30","bands":"27 - 29; 23 - 26","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"5","percent":"60-69%"}]},{"name":"Bachelor of Engineering Technology in Electrical Engineering","aps":"36","bands":"","method":"Method 2","subjects":[{"subject":"English","rating":"5","percent":"60-69%"},{"subject":"Mathematics","rating":"5","percent":"60-69%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"5","percent":"60-69%"}]},{"name":"Bachelor of Engineering Technology in Computer Engineering","aps":"30","bands":"27 - 29; 23 - 26","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"5","percent":"60-69%"}]},{"name":"Diploma in Mechanical Engineering","aps":"30","bands":"27 - 29; 23 - 26","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"5","percent":"60-69%"}]},{"name":"Diploma in Mechanical Engineering (Mechatronics)","aps":"30","bands":"","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"4","percent":"50-59%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"4","percent":"50-59%"},{"subject":"Technical Science","rating":"5","percent":"60-69%"}]},{"name":"Bachelor of Marine Engineering","aps":"36","bands":"","method":"Method 2","subjects":[{"subject":"English","rating":"4","percent":"50-59%"},{"subject":"Mathematics","rating":"5","percent":"60-69%"},{"subject":"Technical Maths","rating":"5","percent":"60-69%"},{"subject":"Mathematical Literacy","rating":"N/A","percent":"Not required / not accepted"},{"subject":"Physical Science","rating":"5","percent":"60-69%"},{"subject":"Technical Science","rating":"5","percent":"60-69%"}]}];
+    function norm(s) { return String(s).toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim(); }
+    function howto() {
+      return "How CPUT APS is calculated (Prospectus 2027)\n\nLife Orientation is NOT used.\nYou must also meet the subject ratings for that qualification.\n\nMethod 1 — Best of six subjects\n• Take the % of your 6 highest subjects (include required ones such as English, Maths, Physical Science)\n• Add them\n• Divide by 10\n• That number is your APS total\n\nExample (Method 1):\n• English — 57%\n• Mathematics — 55%\n• Subject 3 — 50%\n• Subject 4 — 54%\n• Subject 5 — 43%\n• Subject 6 — 45%\n• Total 304 ÷ 10 = APS 30.4\n\nMethod 2 — Double Maths and Science (many Engineering programmes)\n• English % as is\n• Mathematics % × 2\n• Physical Science % × 2\n• Next best subject % as is\n• Add, then divide by 10\n\nExample (Method 2):\n• English — 57%\n• Mathematics — 55% × 2 = 110\n• Physical Science — 50% × 2 = 100\n• Next subject — 54%\n• Total 321 ÷ 10 = APS 32.1\n\nNSC rating to percentage:\n• 7 = 80–100%\n• 6 = 70–79%\n• 5 = 60–69%\n• 4 = 50–59%\n• 3 = 40–49%\n• 2 = 30–39%\n• 1 = 0–29%";
+    }
+    function formatProg(p) {
+      let out = p.name + "\n\nTotal APS needed: " + p.aps + "\n";
+      if (p.method) out += "APS method: " + p.method + "\n";
+      const bands = String(p.bands || "");
+      if (bands.includes("27") && bands.includes("29")) out += "ECP / possible range: 27–29\n";
+      if (bands.includes("23") && bands.includes("26")) out += "Waitlist range: 23–26\n";
+      out += "\nSubjects (rating = percentage band):\n";
+      (p.subjects || []).forEach(s => {
+        if (s.rating === "N/A") out += "• " + s.subject + ": not accepted / not required\n";
+        else out += "• " + s.subject + ": " + s.rating + "  (" + s.percent + ")\n";
+      });
+      return out;
+    }
+    function matchProgs(q) {
+      const n = norm(q);
+      if ((n.includes("how") && n.includes("aps")) || n.includes("calculat") || n.includes("admission point")) return [];
+      const scored = [];
+      PROGRAMMES.forEach(p => {
+        const name = norm(p.name);
+        let score = 0;
+        name.split(" ").forEach(w => { if (w.length > 3 && n.includes(w)) score += 4; });
+        ["chemical","civil","nursing","mechanical","electrical","construction","agriculture","accountancy","biotechnology"].forEach(k => {
+          if (n.includes(k) && name.includes(k)) score += 12;
+        });
+        if (score >= 12) scored.push([score, p]);
+      });
+      scored.sort((a,b) => b[0]-a[0]);
+      const seen = new Set();
+      return scored.map(x => x[1]).filter(p => { if (seen.has(p.name)) return false; seen.add(p.name); return true; }).slice(0, 3);
+    }
+    function ratingFrom(p) {
+      if (p >= 80) return 7; if (p >= 70) return 6; if (p >= 60) return 5;
+      if (p >= 50) return 4; if (p >= 40) return 3; if (p >= 30) return 2; return 1;
+    }
+    function parseMarks(q) {
+      const aliases = [
+        ["life orientation","skip"],["mathematical literacy","mathematical literacy"],["maths literacy","mathematical literacy"],
+        ["technical mathematics","technical maths"],["technical maths","technical maths"],["tech maths","technical maths"],
+        ["physical sciences","physical science"],["physical science","physical science"],["technical science","technical science"],
+        ["life sciences","life sciences"],["life science","life sciences"],["business studies","business studies"],
+        ["english","english"],["mathematics","mathematics"],["maths","mathematics"],["accounting","accounting"],
+        ["geography","geography"],["economics","economics"],["history","history"],["tourism","tourism"]
+      ];
+      const marks = [];
+      const re = /([a-z][a-z &/]+?)\s*[:=]?\s*(\d{1,3})/gi;
+      let m;
+      const text = String(q).toLowerCase().replace(/%/g, " ");
+      while ((m = re.exec(text))) {
+        const raw = m[1].replace(/\s+/g, " ").trim();
+        const pct = parseFloat(m[2]);
+        if (!(pct >= 1 && pct <= 100)) continue;
+        let key = "";
+        for (const [a, canon] of aliases) { if (raw.includes(a)) { key = canon; break; } }
+        if (key === "skip") continue;
+        if (!key && raw.length > 3) key = raw;
+        if (key && !marks.some(x => x[0] === key)) marks.push([key, pct]);
+      }
+      return marks;
+    }
+    function markOf(marks, names) {
+      const hit = marks.find(x => names.includes(x[0]));
+      return hit ? hit[1] : null;
+    }
+    function userRating(marks, names) {
+      const p = markOf(marks, names);
+      return p == null ? 0 : ratingFrom(p);
+    }
+    function aps1(marks) {
+      return marks.filter(x => x[0] !== "life orientation").map(x => x[1]).sort((a,b)=>b-a).slice(0,6).reduce((s,v)=>s+v,0) / 10;
+    }
+    function aps2(marks) {
+      const eng = markOf(marks, ["english"]) || 0;
+      const maths = markOf(marks, ["mathematics"]) ?? markOf(marks, ["technical maths"]) ?? 0;
+      const sci = markOf(marks, ["physical science"]) ?? markOf(marks, ["technical science"]) ?? 0;
+      const rest = marks.filter(x => !["english","mathematics","technical maths","physical science","technical science","life orientation"].includes(x[0])).map(x => x[1]).sort((a,b)=>b-a);
+      return (eng + maths * 2 + sci * 2 + (rest[0] || 0)) / 10;
+    }
+    function reqRating(s) {
+      if (!s || s.rating === "N/A") return null;
+      const n = parseInt(s.rating, 10);
+      return (!n || n <= 1) ? null : n;
+    }
+    function titleCase(s) { return s.replace(/\b\w/g, c => c.toUpperCase()); }
+    function qualifies(p, marks) {
+      const need = parseFloat(String(p.aps).match(/\d+/) || 0);
+      if (need < 18) return null;
+      const method2 = String(p.method || "").toLowerCase().includes("2");
+      const aps = method2 ? aps2(marks) : aps1(marks);
+      if (aps + 0.05 < need) return null;
+      const mlForbidden = (p.subjects || []).some(s => /mathematical literacy/i.test(s.subject) && s.rating === "N/A");
+      const hasMaths = markOf(marks, ["mathematics"]) != null || markOf(marks, ["technical maths"]) != null;
+      if (mlForbidden && !hasMaths) return null;
+      for (const s of (p.subjects || [])) {
+        const needR = reqRating(s);
+        if (needR == null) continue;
+        const key = s.subject.toLowerCase();
+        let got = 0;
+        if (key.includes("english")) got = userRating(marks, ["english"]);
+        else if (key === "mathematics") {
+          const tr = (p.subjects || []).find(x => x.subject.toLowerCase().includes("technical maths"));
+          const needT = reqRating(tr) || needR;
+          const m = userRating(marks, ["mathematics"]);
+          const t = userRating(marks, ["technical maths"]);
+          got = Math.max(m, t >= needT ? t : 0);
+        } else if (key.includes("technical maths")) continue;
+        else if (key.includes("mathematical literacy")) {
+          if (mlForbidden) continue;
+          const mathsNeed = reqRating((p.subjects || []).find(x => x.subject.toLowerCase() === "mathematics"));
+          const techNeed = reqRating((p.subjects || []).find(x => x.subject.toLowerCase().includes("technical maths")));
+          const m = userRating(marks, ["mathematics"]);
+          const t = userRating(marks, ["technical maths"]);
+          got = ((mathsNeed && m >= mathsNeed) || (techNeed && t >= techNeed)) ? needR : userRating(marks, ["mathematical literacy"]);
+        } else if (key.includes("physical science")) {
+          const ps = userRating(marks, ["physical science"]);
+          const ts = userRating(marks, ["technical science"]);
+          const tsNeed = reqRating((p.subjects || []).find(x => x.subject.toLowerCase().includes("technical science")));
+          got = (ps >= needR) ? ps : ((tsNeed && ts >= tsNeed) ? ts : ps);
+        } else if (key.includes("technical science")) continue;
+        else if (key.includes("life science")) got = userRating(marks, ["life sciences"]);
+        else got = userRating(marks, [key]);
+        if (got < needR) return null;
+      }
+      const hasReal = (p.subjects || []).some(s => reqRating(s) != null);
+      if (!hasReal && !/education/i.test(p.name)) return null;
+      return [aps, method2 ? "Method 2" : "Method 1"];
+    }
+    function predict(marks) {
+      if (marks.length < 3) return "Type at least 3 subjects with percentages in the chat box.";
+      let out = "Your results\n\n";
+      marks.forEach(([k,p]) => { out += "• " + titleCase(k) + " — " + p + "%  (rating " + ratingFrom(p) + ")\n"; });
+      out += "\nYour APS Method 1 (best 6 subjects ÷ 10): " + aps1(marks).toFixed(1) + "\n";
+      out += "Your APS Method 2 (double Maths & Science): " + aps2(marks).toFixed(1) + "\n";
+      out += "Life Orientation is not used.\n\n";
+      const hits = [];
+      PROGRAMMES.forEach(p => {
+        const q = qualifies(p, marks);
+        if (q) hits.push({ aps: q[0], method: q[1], p });
+      });
+      hits.sort((a,b) => parseFloat(b.p.aps) - parseFloat(a.p.aps) || a.p.name.localeCompare(b.p.name));
+      const seen = new Set();
+      const unique = hits.filter(h => { if (seen.has(h.p.name)) return false; seen.add(h.p.name); return true; }).slice(0, 15);
+      if (!unique.length) {
+        out += "No listed 2027 programmes matched both the APS total and the subject ratings.\nTry another subject combination, or check a specific course name.";
+        return out;
+      }
+      out += "Courses you may qualify for (estimate from the 2027 prospectus):\n";
+      unique.forEach(h => { out += "• " + h.p.name + "  — needs APS " + h.p.aps + ", you have " + h.aps.toFixed(1) + " (" + h.method + ")\n"; });
+      out += "\nThis is a guide only. CPUT still checks interviews, portfolios, space, and official closing dates.";
+      return out;
+    }
+    function answer(question) {
+      const n = norm(question);
+      if ((n.includes("how") && n.includes("aps")) || n.includes("calculat") || n === "aps") return howto();
+      const marks = parseMarks(question);
+      if (marks.length >= 3) return predict(marks);
+      const hits = matchProgs(question);
+      if (hits.length) return hits.map(formatProg).join("\n--------------------\n\n");
+      const names = PROGRAMMES.map(p => p.name).filter(nm => n.split(" ").some(w => w.length > 4 && norm(nm).includes(w)));
+      if (names.length) return formatProg(PROGRAMMES.find(p => p.name === names[0]));
+      return "Type a qualification name, or type at least 3 subjects with percentages.";
+    }
+    const log = document.getElementById("log");
+    const qel = document.getElementById("q");
+    function add(text, who) {
+      const d = document.createElement("div");
+      d.className = "msg " + who;
+      d.textContent = text;
+      log.appendChild(d);
+      log.scrollTop = log.scrollHeight;
+    }
+    add("Hi. Type your subjects and percentages, or a qualification name. I only answer after you type.", "bot");
+    async function ask(text) {
+      const question = (text || qel.value).trim();
+      if (!question) return;
+      qel.value = "";
+      add(question, "me");
+      try {
+        const res = await fetch("/ask", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ question }) });
+        if (res.ok) { const data = await res.json(); add(data.answer || "No answer.", "bot"); return; }
+      } catch (_) {}
+      add(answer(question), "bot");
+    }
+    document.getElementById("send").onclick = () => ask();
+    qel.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(); } });
+  </script>
+</body>
+</html>

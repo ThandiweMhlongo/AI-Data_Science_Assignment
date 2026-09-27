@@ -1,0 +1,2 @@
+Optional extra notes (.txt) or extra prospectus .docx files can go here.
+The main indexed file is 2027-Prospectus-080526.docx in the project folder.

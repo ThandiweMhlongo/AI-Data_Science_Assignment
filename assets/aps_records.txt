@@ -1,0 +1,407 @@
+NAME|Diploma in Agriculture
+APS|30
+METHOD|Method 1
+BANDS|30 with Maths;; 31 with Tec h Maths; 28 with Maths;; 30 with Maths;; 29 with Tec h Maths;; 30 with Maths; 31 with Tec h Maths;; 32 with Maths; 28 with Maths;; 30 with Maths;; 29 with Tec h Maths; 31 with Tec h Maths; 28 with Maths;; 30 with Maths;
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|4|50-59%
+SUB|Mathematical Literacy|4|50-59%
+SUB|Life Sciences|4|50-59%
+SUB|Physical Science|4|50-59%
+END
+NAME|Bachelor of Food Science & Technology
+APS|32
+METHOD|
+BANDS|32 with Maths;; 33 with Tec h Maths; 28 with Maths;; 30 with Maths;; 29 with Tec h Maths; 31 with Tec h Maths; 28 with Maths;; 30 with Maths;; 29 with Tech; 31 with Tech; 32 with Maths; 30 with Maths; 26 with Maths;; 28 with Maths;
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|3|40-49%
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|4|50-59%
+END
+NAME|Diploma in Accountancy
+APS|38
+METHOD|
+BANDS|
+SUB|English|3|40-49%
+SUB|Mathematics|4|50-59%
+END
+NAME|Diploma in Accountancy (Extended)
+APS|35
+METHOD|
+BANDS|
+SUB|English|3|40-49%
+SUB|Mathematics|4|50-59%
+END
+NAME|Diploma in Entrepreneurship
+APS|26
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|2|30-39%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Entrepreneurship (Extended)
+APS|22
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|2|30-39%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Operations Management
+APS|28
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|3|40-49%
+END
+NAME|Diploma in Public Administration
+APS|28
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|2|30-39%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Public Administration (Extended)
+APS|24
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|2|30-39%
+SUB|Mathematical Literacy|3|40-49%
+END
+NAME|Diploma in Retail Business Management
+APS|26
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|2|30-39%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Real Estate
+APS|26
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|2|30-39%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Bachelor of Paralegal Studies
+APS|30
+METHOD|
+BANDS|
+SUB|English|1|0-29%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|3|40-49%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|BACHELOR IN EDUCATION: FOUNDATION PHASE TEACHING
+APS|32
+METHOD|
+BANDS|
+END
+NAME|BACHELOR IN EDUCATION: INTERMEDIATE PHASE TEACHING
+APS|32
+METHOD|
+BANDS|
+END
+NAME|BACHELOR IN EDUCATION: SENIOR PHASE and FURTHER EDUCATION & TRAINING (FET) TEACHING
+APS|32
+METHOD|
+BANDS|
+END
+NAME|Bachelor of Nursing
+APS|30
+METHOD|
+BANDS|
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|4|50-59%
+END
+NAME|Bachelor of Nursing (ECP)
+APS|27-29
+METHOD|
+BANDS|
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|4|50-59%
+END
+NAME|Diploma in Architectural Technology
+APS|30
+METHOD|
+BANDS|30 with M; 32 with ML; 26 with M; 28 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|6|70-79%
+SUB|Mathematical Literacy|5|60-69%
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|3|40-49%
+END
+NAME|Diploma in Interior Design
+APS|30
+METHOD|
+BANDS|30 with M; 32 with ML; 26 with M; 28 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|6|70-79%
+SUB|Mathematical Literacy|5|60-69%
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|3|40-49%
+END
+NAME|Diploma in Fashion
+APS|28
+METHOD|
+BANDS|28 with M & ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Visual Communication Design
+APS|28
+METHOD|
+BANDS|28 with M & ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Product Design
+APS|28
+METHOD|
+BANDS|28 with M & ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Jewellery Design & Manufacture
+APS|28
+METHOD|
+BANDS|28 with M & ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Film Production
+APS|30
+METHOD|
+BANDS|
+SUB|English|5|60-69%
+END
+NAME|Diploma in Photography
+APS|30
+METHOD|
+BANDS|
+SUB|English|4|50-59%
+END
+NAME|Diploma in Journalism
+APS|28
+METHOD|
+BANDS|28 with M; 30 with ML
+SUB|English|5|60-69%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|4|50-59%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Public Relations & Communication
+APS|28
+METHOD|
+BANDS|28 with M; 30 with ML
+SUB|English|5|60-69%
+SUB|Mathematics|2|30-39%
+SUB|Technical Maths|4|50-59%
+SUB|Mathematical Literacy|3|40-49%
+END
+NAME|Diploma in Applications Development
+APS|28
+METHOD|
+BANDS|28 with M; 30 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Communication Networks
+APS|28
+METHOD|
+BANDS|28 with M; 30 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Multimedia Applications
+APS|28
+METHOD|
+BANDS|28 with M; 30 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Higher Certificate in ICT
+APS|24
+METHOD|
+BANDS|24 with M; 26 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+END
+NAME|Diploma in Urban & Regional Planning
+APS|28
+METHOD|
+BANDS|28 with M; 30 with ML
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|5|60-69%
+END
+NAME|Diploma in Chemical Engineering
+APS|30
+METHOD|Method 2
+BANDS|27 - 29; 23 - 26
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|N/A|Not required / not accepted
+END
+NAME|Bachelor of Engineering Technology in Chemical Engineering
+APS|36
+METHOD|Method 2
+BANDS|
+SUB|English|5|60-69%
+SUB|Mathematics|5|60-69%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|5|60-69%
+SUB|Technical Science|N/A|Not required / not accepted
+END
+NAME|Diploma in Civil Engineering
+APS|30
+METHOD|Method 2
+BANDS|27 - 29; 23 - 26
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|5|60-69%
+END
+NAME|Diploma in Geomatics (Combining Surveying & Cartography)
+APS|30
+METHOD|
+BANDS|
+SUB|English|N/A|Not required / not accepted
+END
+NAME|Bachelor of Engineering Technology in Civil Engineering
+APS|36
+METHOD|Method 2
+BANDS|
+SUB|English|5|60-69%
+SUB|Mathematics|5|60-69%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|5|60-69%
+SUB|Technical Science|5|60-69%
+END
+NAME|Diploma in Clothing & Textile Technology
+APS|26
+METHOD|Method 1
+BANDS|26 with; 28 with; 26 with; 28 with
+SUB|English|4|50-59%
+SUB|Mathematics|3|40-49%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|4|50-59%
+SUB|Life Sciences|N/A|Not required / not accepted
+SUB|Physical Science|N/A|Not required / not accepted
+END
+NAME|Diploma in Construction
+APS|25
+METHOD|
+BANDS|
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|N/A|Not required / not accepted
+SUB|Technical Science|N/A|Not required / not accepted
+END
+NAME|Diploma in Engineering Technology in Electrical Engineering
+APS|30
+METHOD|Method 2
+BANDS|27 - 29; 23 - 26
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|5|60-69%
+END
+NAME|Bachelor of Engineering Technology in Electrical Engineering
+APS|36
+METHOD|Method 2
+BANDS|
+SUB|English|5|60-69%
+SUB|Mathematics|5|60-69%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|5|60-69%
+END
+NAME|Bachelor of Engineering Technology in Computer Engineering
+APS|30
+METHOD|Method 2
+BANDS|27 - 29; 23 - 26
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|5|60-69%
+END
+NAME|Diploma in Mechanical Engineering
+APS|30
+METHOD|Method 2
+BANDS|27 - 29; 23 - 26
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|5|60-69%
+END
+NAME|Diploma in Mechanical Engineering (Mechatronics)
+APS|30
+METHOD|Method 2
+BANDS|
+SUB|English|4|50-59%
+SUB|Mathematics|4|50-59%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|4|50-59%
+SUB|Technical Science|5|60-69%
+END
+NAME|Bachelor of Marine Engineering
+APS|36
+METHOD|Method 2
+BANDS|
+SUB|English|4|50-59%
+SUB|Mathematics|5|60-69%
+SUB|Technical Maths|5|60-69%
+SUB|Mathematical Literacy|N/A|Not required / not accepted
+SUB|Physical Science|5|60-69%
+SUB|Technical Science|5|60-69%
+END
