@@ -1,0 +1,9 @@
+C:\Users\thand\Data Science project\AI-Data_Science_Assignment\target\debug\deps\jobserver-8eea4e96336f7d79.d: C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\lib.rs C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\error.rs C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\windows.rs
+
+C:\Users\thand\Data Science project\AI-Data_Science_Assignment\target\debug\deps\libjobserver-8eea4e96336f7d79.rlib: C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\lib.rs C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\error.rs C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\windows.rs
+
+C:\Users\thand\Data Science project\AI-Data_Science_Assignment\target\debug\deps\libjobserver-8eea4e96336f7d79.rmeta: C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\lib.rs C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\error.rs C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\windows.rs
+
+C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\lib.rs:
+C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\error.rs:
+C:\Users\thand\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\jobserver-0.1.35\src\windows.rs:

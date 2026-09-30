@@ -426,6 +426,48 @@ pub fn qualifies(p: &ProgrammeAps, marks: &[(String, f32)]) -> Option<(f32, Stri
     let label = if method2 { "Method 2" } else { "Method 1" };
     Some((aps, label.to_string()))
 }
+pub fn calculate_aps_only(marks: &[(String, f32)]) -> String {
+    if marks.len() < 3 {
+        return "Please enter at least 3 subjects and their percentages.\n\n\
+Example:\n\
+English 65%, Mathematics 58%, Physical Science 61%, \
+Life Sciences 55%, Geography 60%, Business Studies 67%"
+            .to_string();
+    }
+
+    let method1 = aps_method1(marks);
+    let method2 = aps_method2(marks);
+
+    let mut response = String::new();
+
+    response.push_str("📊 YOUR APS SCORE\n\n");
+
+    response.push_str(&format!(
+        "APS Method 1: {:.1}\n",
+        method1
+    ));
+
+    response.push_str(&format!(
+        "APS Method 2: {:.1}\n",
+        method2
+    ));
+
+    response.push_str("\nSubjects entered:\n");
+
+    for (subject, mark) in marks {
+        response.push_str(&format!(
+            "• {}: {:.0}%\n",
+            subject,
+            mark
+        ));
+    }
+
+    response.push_str(
+        "\nThis APS calculation is based on the CPUT APS methods."
+    );
+
+    response
+}
 
 pub fn predict_courses(marks: &[(String, f32)], programmes: &[ProgrammeAps]) -> String {
     if marks.len() < 3 {

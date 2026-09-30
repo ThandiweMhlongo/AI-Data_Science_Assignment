@@ -2,11 +2,16 @@ use regex::Regex;
 use std::collections::{HashMap, HashSet};
 
 use crate::aps::{
-    format_aps_howto, format_programme, load_programmes, looks_like_aps_howto, looks_like_results,
+    calculate_aps_only, format_aps_howto, format_programme, load_programmes, looks_like_aps_howto, looks_like_results,
     match_programmes, parse_marks, predict_courses, ProgrammeAps,
 };
-use crate::loader::load_prospectus_text;
 
+use crate::course_info::{
+    course_information,
+    looks_like_course_info,
+};
+
+use crate::loader::load_prospectus_text;
 #[derive(Clone, Debug)]
 pub struct Chunk {
     pub id: usize,
@@ -60,13 +65,49 @@ impl RagIndex {
             return "The 2027 prospectus could not be loaded. Keep 2027-Prospectus-080526.docx in the CHATBOX_CPUT_PROSPECTUS folder.".to_string();
         }
 
-        let marks = parse_marks(q);
-        if marks.len() >= 3 || looks_like_results(q) {
-            return predict_courses(&marks, &self.programmes);
-        }
-        if looks_like_aps_howto(q) {
-            return format_aps_howto();
-        }
+       let marks = parse_marks(q);
+
+// APS CALCULATOR PAGE
+if q.to_lowercase().starts_with("calculate my aps:") {
+    return calculate_aps_only(&marks);
+}
+
+// COURSE CHECKER LANDING PAGE
+if marks.len() >= 3 || looks_like_results(q) {
+    return predict_courses(&marks, &self.programmes);
+}
+// COURSE INFORMATION PAGE
+if looks_like_course_info(q) {
+
+    let course_query = q
+        .trim()
+        .strip_prefix("COURSE_INFO:")
+        .unwrap_or(q)
+        .trim();
+
+    // First try the structured APS programme records.
+    if crate::course_info::find_course(q, &self.programmes).is_some() {
+    return course_information(q, &self.programmes);
+}
+
+    // If not found there, search the actual prospectus.
+    let hits = self.retrieve(course_query, 8);
+
+    if hits.is_empty() {
+        return format!(
+            "I could not find information for \"{}\" \
+in the 2027 CPUT prospectus.\n\n\
+Please check the qualification name and try again.",
+            course_query
+        );
+    }
+
+    return synthesize_course_information(
+        course_query,
+        &hits,
+        &self.source,
+    );
+}
         let matched = match_programmes(q, &self.programmes);
         if !matched.is_empty() {
             return matched
@@ -215,6 +256,75 @@ fn synthesize(question: &str, hits: &[(f32, &Chunk)], source: &str) -> String {
         out.push_str(&format!("\nSource file: {source}"));
     }
     out
+}
+fn synthesize_course_information(
+    course: &str,
+    hits: &[(f32, &Chunk)],
+    source: &str,
+) -> String {
+
+    let course_tokens = tokenize(course);
+
+    let mut relevant: Vec<String> = Vec::new();
+
+    for (_, chunk) in hits {
+
+        let combined =
+            format!("{} {}", chunk.title, chunk.text);
+
+        let combined_tokens =
+            tokenize(&combined);
+
+        let matches =
+            course_tokens
+                .iter()
+                .filter(|token| {
+                    combined_tokens.contains(token)
+                })
+                .count();
+
+        if matches > 0 {
+            relevant.push(
+                collapse(&combined)
+            );
+        }
+    }
+
+    relevant.dedup();
+
+    if relevant.is_empty() {
+        return format!(
+            "I could not find course information for \
+\"{}\" in the 2027 CPUT prospectus.",
+            course
+        );
+    }
+
+    let mut response =
+        String::new();
+
+    response.push_str(
+        "🎓 COURSE INFORMATION\n\n"
+    );
+
+    response.push_str(
+        &format!("Qualification: {}\n\n", course)
+    );
+
+    for text in relevant.iter().take(3) {
+
+        response.push_str(text);
+
+        response.push_str("\n\n");
+    }
+
+    if !source.is_empty() {
+        response.push_str(
+            "Source: CPUT 2027 Prospectus"
+        );
+    }
+
+    response
 }
 
 fn strip_noise(s: &str) -> String {

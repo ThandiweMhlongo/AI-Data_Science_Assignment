@@ -1,5 +1,6 @@
 mod aps;
 mod chat;
+mod course_info;
 mod loader;
 mod rag;
 
